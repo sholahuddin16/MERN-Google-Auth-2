@@ -4,7 +4,7 @@ import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import decode from 'jwt-decode';
 import useStyles from './styles';
-import memories from '../../images/memories.png';
+import memories from '../../images/memories.svg';
 
 const Navbar = () => {
     const classes = useStyles();
@@ -25,7 +25,11 @@ const Navbar = () => {
     useEffect(() => {
         const token = user?.token;
 
-        //JWT
+        if(token) {
+            const decodedToken = decode(token);
+
+            if(decodedToken.exp * 1000 < new Date().getTime()) logout();
+        }
 
         setUser(JSON.parse(localStorage.getItem('profile')));
     },[location]);
@@ -34,7 +38,7 @@ const Navbar = () => {
     return (
         <AppBar className={classes.appBar} position="static" color="inherit">
             <div className={classes.brandContainer}>
-            <Typography component={Link} to="/" className={classes.heading} variant="h2" align="center">Memories</Typography>
+            <Typography component={Link} to="/" className={classes.heading} variant="h2" align="center">MERN-Auth</Typography>
             <img className={classes.image} src={memories} alt="memories" height="60" />
             </div>
             <Toolbar className={classes.toolbar}>
